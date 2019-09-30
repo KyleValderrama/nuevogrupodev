@@ -1,0 +1,12 @@
+#bgimg, #loginbg
+{   
+    background-image: url(../assets/img/img2.jpg);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+#ex1Slider .slider-selection {
+	background: rgb(39, 115, 255);
+}
+#ex1Slider .slider-handle {
+	background: #0069D9;
+}

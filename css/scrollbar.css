@@ -1,0 +1,36 @@
+.scrollable
+{
+    height: 500px;
+    overflow-y: auto;
+    border-color: #343A40;
+    border-width: 1px 1px 1px 1px;
+    border-style: solid;
+    border-radius: 0px 0px 5px 5px;
+}
+.scrollable::-webkit-scrollbar {
+    width: 10px;
+}
+.scrollable::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+    margin:5px;
+    
+}
+.scrollable::-webkit-scrollbar-thumb {
+    
+    background: rgba(151, 151, 151, 50%); 
+    border-radius:100px;
+    
+}
+.scrollable::-webkit-scrollbar-thumb:hover {
+    
+    background: rgb(151, 151, 151); 
+    border-radius:100px;
+    transition: .4s;
+}
+.tblhead
+{
+    background:#343A40;
+    border-radius:5px 5px 0px 0px;
+}
+
