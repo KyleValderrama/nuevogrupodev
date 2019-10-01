@@ -31,6 +31,15 @@ if(!isset($_SESSION['admin']))
     <title>Fields</title>
   </head>
   <body>
+
+    <!--alert-->
+    <div id = "idexist" class="alert alert-danger alert-dismissible fade show text-center" style="margin:0;" role="alert">
+        <strong>Invalid Field ID!</strong> The Field ID you have entered already exist, please try a new one.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-5">
         <a class="navbar-brand" href="#">Nuevo Grupo Dev</a>
@@ -93,7 +102,7 @@ if(!isset($_SESSION['admin']))
                         <div class="input-group-prepend">
                             <div class="input-group-text"><i class="fas fa-map-marker-alt"></i></div>
                         </div>
-                        <textarea name="field_address" class="form-control" style="min-height:50px; max-height:200px;"></textarea>
+                        <textarea name="field_address" class="form-control" style="min-height:50px; max-height:200px;" required></textarea>
                     </div>
 
                     <label for="field_select" class="text-left">Add Field Image Link</label>
@@ -109,7 +118,7 @@ if(!isset($_SESSION['admin']))
                         <div class="input-group-prepend">
                             <div class="input-group-text"><i class="fas fa-id-badge"></i></div>
                         </div>
-                        <input type="text" name = "field_custom_id" class="form-control" placeholder="CLNMNL_BDM_#" optional>
+                        <input min=12 type="text" name = "field_custom_id" class="form-control" placeholder="CLNMNL_BDM_#" required>
                     </div>
                     
                     <div class="d-flex justify-content-center">
@@ -184,12 +193,27 @@ if(!isset($_SESSION['admin']))
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/bootstrap-slider.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script>
-$('#ex1').slider({
-	formatter: function(value) {
-		return 'Current value: ' + value;
-	}
-});
-    </script>
+ 
+<?php
+//------- Danger Alert
+if(!isset($_SESSION['idexist']))
+{
+?>
+<script>
+    $('#idexist').hide();
+</script>
+<?php
+}
+else
+{
+?>
+<script>
+        $('#idexist').show();
+</script>
+<?php   
+    unset($_SESSION['idexist']);
+}
+?>
+  
   </body>
 </html>

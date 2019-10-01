@@ -27,6 +27,43 @@ if(!isset($_SESSION['logintoken']))
     <title>Reservations</title>
   </head>
   <body>
+    <!--alert-->
+    <div id = "res_cancelled" class="alert alert-warning alert-dismissible fade show text-center" style="margin:0;" role="alert">
+        <strong>Reservation Cancelled!</strong> Your Reservation has been cancelled just now.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <!--alert-->
+    <div id = "payment" class="alert alert-success alert-dismissible fade show text-center" style="margin:0;" role="alert">
+        <strong>Payment Submitted!</strong> Your Reservation has been secured. Thank you for scheduling.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="cancelmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content bg-secondary text-white">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Cancel Reservation</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            Are you sure you want to cancel your reservation?
+        </div>
+        <div class="modal-footer">
+            
+                <button type="button" class="btn btn-warning" id="cancel_button">Confirm</button>
+            </form>
+        </div>
+        </div>
+    </div>
+    </div>
+
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <a class="navbar-brand" href="#">Nuevo Grupo Dev</a>
@@ -36,7 +73,7 @@ if(!isset($_SESSION['logintoken']))
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -83,6 +120,7 @@ if(!isset($_SESSION['logintoken']))
                 <th scope="col">Date</th>
                 <th scope="col">Time</th>
                 <th scope="col">Hours</th>
+                <th scope="col">Payment</th>
                 <th scope="col">Status</th>
                 <th scope="col"></th>
                 </tr>
@@ -108,11 +146,45 @@ if(!isset($_SESSION['logintoken']))
                                 <?php
                                 }
                                 ?>
-                                <td><?php echo $row['res_sched_date']; ?></td>
-                                <td><?php echo $row['res_sched_time_in']; ?></td>
+                                <td><?php echo date('M j Y', strtotime($row['res_sched_date']));?></td>
+                                <td><?php echo date('g:i A', strtotime($row['res_sched_time_in']));?></td>
                                 <td><?php echo $row['res_sched_hours']; ?></td>
-                                <td><button class="btn btn-outline-warning"><?php echo $row['res_status']; ?></button></td>
-                                <td><button class="btn btn-danger">Cancel</button></td>
+                                <?php
+                                if($row['res_payment_status'] == 0)
+                                {
+                                ?>
+                                    <td><button class='btn btn-outline-secondary'>Unpaid</button></td>
+                                <?php
+                                }
+                                else{
+                                ?>
+                                    <td><button class='btn btn-outline-primary'>Paid</button></td>
+                                
+                                <?php
+                                }
+                                if($row['res_payment_status'] == 0)
+                                {
+                                ?>
+                                <td><button class="btn btn-outline-warning"><?php echo $row['res_status']; ?>
+                                </button></td>
+                                <td>
+                                <form action="checkout_rdct.php" method="POST">
+                                    <button name= "checkout_field_id" value = "<?php echo $row['res_field_id']; ?>" class="btn btn-primary mb-1" style="width:100%"><i class="fas fa-credit-card"></i> Pay Now</button>
+                                </form>
+                                <form method = "POST" action="res_cancel.php"  id="cancel_confirm">
+                                <button style="width:100%" name = "res_cancel" value = "<?php echo $row['res_field_id'];?>" class="btn btn-danger res_cancel" data-toggle="modal" data-target="#cancelmodal">Cancel</button>
+                                <input type="text" id = "input_cancel" name = "res_cancel_id" hidden>
+                                </form>
+                                </td>
+                                <?php
+                                }
+                                else
+                                {
+                                ?>
+                                <td><button class="btn btn-outline-success"><?php echo $row['res_status']; ?>
+                                </button></td>
+                                <td><button class="btn btn-danger disabled" style="width:100%">Cancel</button></td>
+                                <?php } ?>
                                 </tr> 
                                 <?php
                                 $x++;
@@ -186,11 +258,59 @@ if(!isset($_SESSION['logintoken']))
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script>
-$('#ex1').slider({
-	formatter: function(value) {
-		return 'Current value: ' + value;
-	}
-});
+    var del_res_id;
+    $('.res_cancel').click(function(){
+        event.preventDefault();
+        $('#input_cancel').val($(this).val());
+        
+    });
+    $('#cancel_button').click(function(){
+        $('#cancel_confirm').submit();
+    });
+
     </script>
   </body>
 </html>
+
+
+<?php
+//------- Danger Alert
+if(!isset($_SESSION['res_cancelled']))
+{
+?>
+<script>
+    $('#res_cancelled').hide();
+</script>
+<?php
+}
+else
+{
+?>
+<script>
+    $('#res_cancelled').show();
+</script>
+<?php   
+    unset($_SESSION['res_cancelled']);
+}
+?>
+
+<?php
+//------- Success Alert
+if(!isset($_SESSION['payment']))
+{
+?>
+<script>
+    $('#payment').hide();
+</script>
+<?php
+}
+else
+{
+?>
+<script>
+    $('#payment').show();
+</script>
+<?php   
+    unset($_SESSION['payment']);
+}
+?>

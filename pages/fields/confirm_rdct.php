@@ -15,6 +15,9 @@ $con->query($sql2);
 $sql = 'UPDATE fields SET field_status = 0 WHERE field_custom_id = "'.$_SESSION['res_field_id'].'"';
 $con->query($sql);
 
+$sql1 = "INSERT INTO reservation_logs (log_id, log_user_email, log_user_name, log_description, log_timestamp) VALUES (NULL, '".$_SESSION['name']."','".$_SESSION['email']."', 'Applied a reservation for ".$_SESSION['res_field_id'].".', current_timestamp())";
+$con->query($sql1);
+
 
 header('Location: ../reservations.php');
 

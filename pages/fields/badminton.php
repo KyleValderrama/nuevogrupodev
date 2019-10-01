@@ -66,7 +66,7 @@ if(isset($_SESSION['admin']))
                     <?php echo $_SESSION['name'] ?>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="reservations.php">Reservations</a>
+                    <a class="dropdown-item" href="../reservations.php">Reservations</a>
                     <a class="dropdown-item" href="#">My Account</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="../logout.php">Logout</a>

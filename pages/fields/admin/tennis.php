@@ -31,6 +31,27 @@ if(!isset($_SESSION['admin']))
     <title>Fields</title>
   </head>
   <body>
+    <!-- Modal -->
+    <div class="modal fade" id="cancelmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content bg-secondary text-white">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Delete Field</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            This will delete this field permanently, are you sure you want to continue?
+        </div>
+        <div class="modal-footer">
+            
+                <button type="button" class="btn btn-warning" id="cancel_button">Confirm</button>
+            </form>
+        </div>
+        </div>
+    </div>
+    </div>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-5">
         <a class="navbar-brand" href="#">Nuevo Grupo Dev</a>
@@ -46,7 +67,7 @@ if(!isset($_SESSION['admin']))
               <a class="nav-link" href="">Fields<span class="sr-only"></span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Reservations</a>
+                <a class="nav-link" href="reservations.php">Reservations</a>
             </li>
           </ul>
             <div class="dropdown show">
@@ -123,10 +144,25 @@ if(!isset($_SESSION['admin']))
                                 </td>
                                 <td style= "width:100px;"><?php echo $row['field_custom_id']; ?></td>
                                 <td>
-                                <form class= "d-flex justify-content-center">
-                                        <button value="<?php echo $row['field_custom_id']; ?>" class="btn btn-primary mr-3"><i class="fas fa-edit"></i> Edit</button>
-                                        <button value="<?php echo $row['field_custom_id']; ?>" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                <?php
+                                    if($row['field_status'] == 1)
+                                    {
+                                ?>
+                                <form class= "d-flex justify-content-center" action="editfield_rdct.php" method="POST">
+                                    <button name = "edit_field_id" style="width:100%;" value="<?php echo $row['field_custom_id']; ?>" class="btn btn-primary mb-2"><i class="fas fa-edit"></i> Edit</button>
                                 </form>
+                                <form action= "deletefield.php" method = "POST" id="del_field_conf">
+                                    <button style="width:100%;" value="<?php echo $row['field_custom_id']; ?>" data-toggle="modal" data-target="#cancelmodal" class="btn btn-danger del_field_btn"><i class="fas fa-trash"></i> Delete</button>
+                                    <input type="text" id = "del_field_id" name = "del_field_id" hidden>
+                                </form>
+                                <?php 
+                                    }
+                                    else
+                                    {
+                                ?>
+                                    <button name = "edit_field_id" style="width:100%;" value="<?php echo $row['field_custom_id']; ?>" class="btn btn-primary mb-2 disabled"><i class="fas fa-edit"></i> Edit</button>
+                                    <button style="width:100%;" value="<?php echo $row['field_custom_id']; ?>" class="btn btn-danger disabled"><i class="fas fa-trash"></i> Delete</button>
+                                <?php } ?>
                                 </td>
                                 </tr> 
                                 <?php
@@ -206,11 +242,15 @@ if(!isset($_SESSION['admin']))
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script>
-$('#ex1').slider({
-	formatter: function(value) {
-		return 'Current value: ' + value;
-	}
-});
+$('.del_field_btn').click(function(){
+        event.preventDefault();
+        $('#del_field_id').val($(this).val());
+        
+    });
+    $('#cancel_button').click(function(){
+        $('#del_field_conf').submit();
+    });
+
     </script>
   </body>
 </html>

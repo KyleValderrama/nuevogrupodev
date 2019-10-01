@@ -45,7 +45,7 @@ if(!isset($_SESSION['admin']))
               <a class="nav-link" href="fields/admin/basketball.php">Fields<span class="sr-only"></span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Reservations</a>
+                <a class="nav-link" href="fields/admin/reservations.php">Reservations</a>
             </li>
           </ul>
             <div class="dropdown show">
@@ -63,7 +63,7 @@ if(!isset($_SESSION['admin']))
     </nav>
     <div class="container-fluid mt-5 mb-5">
     <h3>Notifications</h3>
-    <div class="card mb-3 scrollable">
+    <div class="card mb-3 scrollable" style="border:0;">
         <div class="card-body">
         <table class="table">
             <thead class="thead-dark">
@@ -76,7 +76,7 @@ if(!isset($_SESSION['admin']))
             </thead>
             <tbody>
                 <?php
-                        $result = $con->query("select * from admin_logs");
+                        $result = $con->query("select * from admin_logs ORDER BY admin_log_time DESC");
                             //or die($con->error);
                             $x=1;                      
                             while($row = mysqli_fetch_array($result))
@@ -86,7 +86,9 @@ if(!isset($_SESSION['admin']))
                                 <th><?php echo $x;?></th>
                                 <td><?php echo $row['admin_log_name']; ?></td>
                                 <td><?php echo $row['admin_log_desc']; ?></td>
-                                <td><?php echo $row['admin_log_time']; ?></td>
+                                <td>
+                                <?php echo date('M j Y g:i A', strtotime($row['admin_log_time']));?>
+                                </td>
                                 </tr> 
                                 <?php
                                 $x++;
