@@ -57,9 +57,6 @@ if(isset($_SESSION['admin']))
             <li class="nav-item">
                 <a class="nav-link" href="#">About</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Schedule</a>
-            </li>
           </ul>
             <div class="dropdown show">
                 <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -67,7 +64,7 @@ if(isset($_SESSION['admin']))
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
                     <a class="dropdown-item" href="../reservations.php">Reservations</a>
-                    <a class="dropdown-item" href="#">My Account</a>
+                    <a class="dropdown-item" href="../myaccount.php">My Account</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="../logout.php">Logout</a>
                 </div>

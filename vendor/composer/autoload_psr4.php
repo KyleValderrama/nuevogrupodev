@@ -6,5 +6,9 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'setasign\\Fpdi\\' => array($vendorDir . '/setasign/fpdi/src'),
     'Stripe\\' => array($vendorDir . '/stripe/stripe-php/lib'),
+    'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
+    'Mpdf\\' => array($vendorDir . '/mpdf/mpdf/src'),
+    'DeepCopy\\' => array($vendorDir . '/myclabs/deep-copy/src/DeepCopy'),
 );

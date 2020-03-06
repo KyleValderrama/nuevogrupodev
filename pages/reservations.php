@@ -90,9 +90,6 @@ if(!isset($_SESSION['logintoken']))
             <li class="nav-item">
                 <a class="nav-link" href="#">About</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Schedule</a>
-            </li>
           </ul>
             <div class="dropdown show">
                 <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -100,7 +97,7 @@ if(!isset($_SESSION['logintoken']))
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
                     <a class="dropdown-item" href="reservations.php">Reservations</a>
-                    <a class="dropdown-item" href="#">My Account</a>
+                    <a class="dropdown-item" href="myaccount.php">My Account</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="logout.php">Logout</a>
                 </div>
@@ -168,9 +165,25 @@ if(!isset($_SESSION['logintoken']))
                                 <td><button class="btn btn-outline-warning"><?php echo $row['res_status']; ?>
                                 </button></td>
                                 <td>
-                                <form action="checkout_rdct.php" method="POST">
-                                    <button name= "checkout_field_id" value = "<?php echo $row['res_field_id']; ?>" class="btn btn-primary mb-1" style="width:100%"><i class="fas fa-credit-card"></i> Pay Now</button>
-                                </form>
+                                
+                                    <div class="dropdown">
+                                        <button class="btn btn-primary dropdown-toggle mb-1"  id="dropdownMenuButton" data-toggle="dropdown" style="width:100%">
+                                            <i class="fas fa-credit-card"></i> Pay Now
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <form action="checkout_rdct.php" method="POST">
+                                                <button class="dropdown-item" name= "checkout_field_id" value = "<?php echo $row['res_field_id']; ?>">
+                                                    Pay with Credit / Debit Card
+                                                </button>
+                                            </form>
+                                            <form action="checkout_rdct.php" method="POST">
+                                                <button name= "checkout_field_id_slip" class="dropdown-item" value = "<?php echo $row['res_field_id']; ?>">
+                                                    Pay with Payment Slip
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                               
                                 <form method = "POST" action="res_cancel.php"  id="cancel_confirm">
                                 <button style="width:100%" name = "res_cancel" value = "<?php echo $row['res_field_id'];?>" class="btn btn-danger res_cancel" data-toggle="modal" data-target="#cancelmodal">Cancel</button>
                                 <input type="text" id = "input_cancel" name = "res_cancel_id" hidden>

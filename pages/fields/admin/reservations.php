@@ -54,6 +54,14 @@ if(!isset($_SESSION['admin']))
         </button>
     </div>
 
+    <!--alert-->
+    <div id = "paid" class="alert alert-success alert-dismissible fade show text-center" style="margin:0;" role="alert">
+        <strong>Payment Approved!</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
     <!-- Modal Decline Res-->
     <div class="modal fade" id="declinemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -114,6 +122,28 @@ if(!isset($_SESSION['admin']))
         <div class="modal-footer">
             
                 <button type="button" class="btn btn-success" id="btn_approve_modal">Confirm</button>
+            </form>
+        </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Modal Paid Res-->
+    <div class="modal fade" id="paidmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content bg-light">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Approve Reservation</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            Are you sure this transaction is Paid?
+        </div>
+        <div class="modal-footer">
+            
+                <button type="button" class="btn btn-success" id="btn_paid_modal">Confirm</button>
             </form>
         </div>
         </div>
@@ -198,7 +228,14 @@ if(!isset($_SESSION['admin']))
                                 if($row['res_payment_status'] == 0)
                                 {
                                 ?>
-                                    <td><button class='btn btn-outline-secondary'>Unpaid</button></td>
+                                <td>
+                                <form method = "POST" action="paid.php"  id="paid_confirm">
+                                    <button name = "btn_paid" value = "<?php echo $row['res_field_id'];?>" id= "btn_paid" class='btn btn-outline-secondary btn_paid' data-toggle="modal" data-target="#paidmodal">
+                                        Unpaid
+                                    </button>
+                                    <input class = "input_res_id" name = "res_id" hidden>
+                                </form>
+                                </td>
                                 <?php
                                 }
                                 else{
@@ -353,23 +390,38 @@ if(!isset($_SESSION['admin']))
         event.preventDefault();
         $('.input_res_id').val($(this).val()); 
     });
+
     $('.btn_decline').click(function(){
         event.preventDefault();
         $('.input_res_id').val($(this).val());   
     });
+
     $('.btn_dismiss').click(function(){
         event.preventDefault();
         $('.dismiss_res_id').val($(this).val());   
     });
+
     $('#btn_approve_modal').click(function(){
         $('#approve_confirm').submit();
     });
+
     $('#btn_decline_modal').click(function(){
-        $('#delete_confirm').submit();
+        $('#decline_confirm').submit();
     });
+
     $('#btn_dismiss_modal').click(function(){
         $('#dismiss_confirm').submit();
     });
+
+    $('#btn_paid_modal').click(function(){
+        $('#paid_confirm').submit();
+    });
+
+    $('.btn_paid').click(function(){
+        event.preventDefault();
+        $('.input_res_id').val($(this).val()); 
+    });
+
     
 
     </script>
@@ -437,5 +489,26 @@ else
 </script>
 <?php   
     unset($_SESSION['dismissed']);
+}
+?>
+
+<?php
+//------- Success Alert ADD
+if(!isset($_SESSION['paid']))
+{
+?>
+<script>
+    $('#paid').hide();
+</script>
+<?php
+}
+else
+{
+?>
+<script>
+        $('#paid').show();
+</script>
+<?php   
+    unset($_SESSION['paid']);
 }
 ?>

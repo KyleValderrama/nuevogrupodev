@@ -5,6 +5,10 @@ if(isset($_SESSION['logintoken']))
 {
     header("Location: index.php");
 }
+if(isset($_SESSION['verify']))
+{
+    header("Location: verify.php");
+}
 
 ?>
 <!doctype html>
@@ -31,8 +35,20 @@ if(isset($_SESSION['logintoken']))
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
+    <div id = "captchaerror" class="alert alert-danger alert-dismissible fade show text-center" style="margin:0;" role="alert">
+        <strong>Invalid Captcha!</strong> Please validate captcha before loging in.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     <div id = "createsuccess" class="alert alert-success alert-dismissible fade show text-center" style="margin:0;" role="alert">
         <strong>Account Created!</strong> You can now login your newly created account.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div id = "resetsuccess" class="alert alert-success alert-dismissible fade show text-center" style="margin:0;" role="alert">
+        <strong>Reset Success</strong> Please Login your account.
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -45,7 +61,7 @@ if(isset($_SESSION['logintoken']))
         </div>
     </div>
     <div class="container-fluid text-primary text-center d-flex justify-content-center">
-        <div class="card mb-5 " style="width: 20rem">
+        <div class="card mb-5 " style="width: 25rem">
             <div class="card-body">
                 <h3 class="card-title">Nuevo Group Dev</h5>
                 <p class="card-text">Login Account</p><hr>
@@ -63,13 +79,12 @@ if(isset($_SESSION['logintoken']))
                         </div>
                         <input type="password" name="password" class="form-control" id="inlineFormInputGroupUsername" placeholder="Password" required>
                     </div>
-                    <div class="custom-control custom-checkbox mb-3">
-                        <input type="checkbox" class="custom-control-input" id="customCheck" name="example1">
-                        <label class="custom-control-label" for="customCheck">Remember Password</label>
+                    <div class = "container-fluid d-flex justify-content-center mb-3">
+                    <div class="g-recaptcha" data-sitekey="6LcqKt8UAAAAANEJBBsdbbmMRCFS2E00fdyV5SGf"></div>
                     </div>
                     <button class="btn btn-primary" style="width: 80%">Login</button><br>
                 </form>
-                <a href="">Forgot Password?</a>
+                <a href="forgetpassword.php">Forgot Password?</a>
                 <hr>
                 <p style="margin:0;">Don't Have account?</p>
                 <a href="signup.php">Sign-Up Here</a>              
@@ -134,6 +149,7 @@ if(isset($_SESSION['logintoken']))
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src='https://www.google.com/recaptcha/api.js' async defer></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
@@ -179,5 +195,48 @@ else
     $('#createsuccess').hide();    
 </script>
 <?php   
+}
+
+if(isset($_SESSION['reset_success']))
+{
+?>
+<script>
+    
+    $('#resetsuccess').show();
+</script>
+<?php
+    session_unset();
+    session_destroy();
+}
+else
+{
+?>
+<script>
+    $('#resetsuccess').hide();    
+</script>
+<?php   
+
+
+}
+
+if(isset($_SESSION['captchaerror']))
+{
+?>
+<script>
+    
+    $('#captchaerror').show();
+</script>
+<?php
+    session_unset();
+    session_destroy();
+}
+else
+{
+?>
+<script>
+    $('#captchaerror').hide();    
+</script>
+<?php  
+
 }
 ?>

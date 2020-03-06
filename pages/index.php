@@ -25,6 +25,34 @@ if(!isset($_SESSION['logintoken']))
     <title>Home</title>
   </head>
   <body>
+    <!-- Modal -->
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="exampleModalLongTitle">Acceptance of Terms</h5>
+        </div>
+        <div class="modal-body">
+            Welcome to Neuvo Grupo!<br>
+            <br>
+            This is a legal agreement between you (either an individual or an entity) the end-user, and the company.<br>
+            <br>
+            Subject to your compliance with these terms and condition.<br>
+        </div>
+        <div class="modal-footer">
+        <div class="container-fluid">
+            <div class="custom-control custom-checkbox d-flex justify-content-center mb-3">
+                <input type="checkbox" class="custom-control-input" id="customCheck" name="example1">
+                <label class="custom-control-label" for="customCheck">Do you agree to the Nuevo Grupo license agreement above?</label>
+            </div>
+            <div class="d-flex justify-content-center">
+                <button type="button" onclick= "agree()" id = "agree" class="btn btn-primary" data-dismiss="modal" disabled>I Agree</button>
+            </div>
+        </div>
+        </div>
+        </div>
+    </div>
+    </div>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <a class="navbar-brand" href="#">Nuevo Grupo Dev</a>
@@ -51,9 +79,6 @@ if(!isset($_SESSION['logintoken']))
             <li class="nav-item">
                 <a class="nav-link" href="#">About</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Schedule</a>
-            </li>
           </ul>
             <div class="dropdown show">
                 <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -61,7 +86,7 @@ if(!isset($_SESSION['logintoken']))
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
                     <a class="dropdown-item" href="reservations.php">Reservations</a>
-                    <a class="dropdown-item" href="#">My Account</a>
+                    <a class="dropdown-item" href="myaccount.php">My Account</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="logout.php">Logout</a>
                 </div>
@@ -217,12 +242,39 @@ if(!isset($_SESSION['logintoken']))
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/bootstrap-slider.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    
     <script>
 $('#ex1').slider({
 	formatter: function(value) {
 		return 'Current value: ' + value;
 	}
 });
+
+
+
+$('#customCheck').change(function(){
+            if(this.checked)
+            $('#agree').attr("disabled", false);
+            else
+            $('#agree').attr("disabled", true);
+});
+
+function agree() {
+    window.location = "unsetagree.php";
+ }
+
+
+
     </script>
   </body>
 </html>
+<?php
+if(isset($_SESSION['agree']))
+{
+?>
+<script>
+$('#modal').modal('show');
+</script>
+<?php
+}
+?>

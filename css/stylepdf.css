@@ -1,0 +1,14 @@
+h1, h2, h3, h4 , p
+{
+    font-family: 'Arial';
+    margin:0;
+}
+span
+{
+    font-family: 'Arial';
+    color:#413e3e;
+}
+table
+{
+    border:1px solid #bfbfbf;
+}
